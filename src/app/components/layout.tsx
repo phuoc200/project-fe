@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import MEDICINE_LOGO from "@/assets/images/province-logo.png";
+import PROVINCE_LOGO from "@/assets/images/province-logo.png";
+import type React from "react";
+import { ShoppingCarts } from "./shopping-cart";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,42 +15,30 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Image
                 width={189}
                 height={36}
-                src={MEDICINE_LOGO || "/placeholder.svg"}
+                src={PROVINCE_LOGO || "/placeholder.svg"}
                 alt="Providence Clinic Logo"
               />
             </Link>
             <nav className="hidden md:flex space-x-8">
-              <Link
-                href="/scientific"
-                className="text-gray-700 hover:text-cyan-600"
-              >
+              <Link href="/scientific" className="text-black font-semibold">
                 Scientific
               </Link>
-              <Link
-                href="/medical"
-                className="text-gray-700 hover:text-cyan-600"
-              >
+              <Link href="/medical" className="text-black font-semibold">
                 Medical
               </Link>
-              <Link
-                href="/educational"
-                className="text-gray-700 hover:text-cyan-600"
-              >
+              <Link href="/educational" className="text-black font-semibold">
                 Educational
               </Link>
-              <Link
-                href="/business"
-                className="text-gray-700 hover:text-cyan-600"
-              >
+              <Link href="/business" className="text-black font-semibold">
                 Business
               </Link>
-              <Link
-                href="/contact"
-                className="text-gray-700 hover:text-cyan-600"
-              >
+              <Link href="/products" className="text-black font-semibold">
+                Products
+              </Link>
+              <Link href="/contact" className="text-black font-semibold">
                 Contact
               </Link>
-              <Link href="/about" className="text-gray-700 hover:text-cyan-600">
+              <Link href="/about" className="text-black font-semibold">
                 About Us
               </Link>
             </nav>
@@ -59,12 +49,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Link href="/register">
                 <Button>Register</Button>
               </Link>
+              <ShoppingCarts />
             </div>
           </div>
         </div>
       </header>
       <main className="flex-grow">{children}</main>
-      <footer className="bg-[#52b4e4] text-white py-8">
+      <footer className="bg-[#f4f4f4] text-black py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
@@ -77,31 +68,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link
-                    href="/scientific"
-                    className="text-sm hover:text-cyan-400"
-                  >
+                  <Link href="/scientific" className="text-sm">
                     Scientific
                   </Link>
                 </li>
                 <li>
-                  <Link href="/medical" className="text-sm hover:text-cyan-400">
+                  <Link href="/medical" className="text-sm">
                     Medical
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/educational"
-                    className="text-sm hover:text-cyan-400"
-                  >
+                  <Link href="/educational" className="text-sm">
                     Educational
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/business"
-                    className="text-sm hover:text-cyan-400"
-                  >
+                  <Link href="/business" className="text-sm">
                     Business
                   </Link>
                 </li>
