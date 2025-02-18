@@ -30,22 +30,22 @@ const slides = [
 export function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
-  //   const previousSlide = () => {
-  //     setCurrentSlide((current) =>
-  //       current === 0 ? slides.length - 1 : current - 1
-  //     );
-  //   };
+  // const previousSlide = () => {
+  //   setCurrentSlide((current) =>
+  //     current === 0 ? slides.length - 1 : current - 1
+  //   );
+  // };
 
-  //   const nextSlide = () => {
-  //     setCurrentSlide((current) =>
-  //       current === slides.length - 1 ? 0 : current + 1
-  //     );
-  //   };
+  const nextSlide = () => {
+    setCurrentSlide((current) =>
+      current === slides.length - 1 ? 0 : current + 1
+    );
+  };
 
-  //   React.useEffect(() => {
-  //     const timer = setInterval(nextSlide, 5000);
-  //     return () => clearInterval(timer);
-  //   }, []);
+  React.useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, []); // Removed nextSlide from dependencies
 
   return (
     <div className="relative w-full h-[600px] overflow-hidden">
@@ -76,7 +76,7 @@ export function HeroCarousel() {
         {slides.map((_, index) => (
           <button
             key={index}
-            className={`w-8 h-0.5  transition-all ${
+            className={`w-8 h-0.5 rounded-full transition-all ${
               currentSlide === index ? "bg-white w-4" : "bg-white/50"
             }`}
             onClick={() => setCurrentSlide(index)}
