@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Sử dụng Next.js router để điều hướng
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Layout from "../components/layout";
+import { useRouter } from "next/navigation";
 import AuthLayout from "../components/auth-layout";
 import { Disc, Facebook, Twitter } from "lucide-react";
 import Link from "next/link";
@@ -106,7 +102,7 @@ export default function AdminLoginPage() {
         </div>
       </div>
       <p className="mt-8 text-center text-gray-600">
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <Link href="/register" className="text-blue-600 hover:underline">
           Sign up
         </Link>

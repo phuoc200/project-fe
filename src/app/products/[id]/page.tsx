@@ -8,21 +8,84 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Facebook, Minus, Plus, Share2, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { products } from "../page";
 import { useCart } from "@/app/contexts/cart-context";
+import type { Product } from "@/types";
+
+// This would typically come from an API or database
+const products: Product[] = [
+  {
+    id: 1,
+    name: "BodyTrace Blood Pressure Monitor (BT106)",
+    brand: "BodyTrace",
+    price: 2327808,
+    originalPrice: 2586453,
+    discount: 10,
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
+    description:
+      "The BodyTrace Blood Pressure Monitor (BT106) is an FDA-cleared cellular-enabled blood pressure monitor.",
+    createdAt: "2024-01-01",
+  },
+  {
+    id: 2,
+    name: "Smart Meter iBloodPressure Blood Pressure Monitor (SMBP802)",
+    brand: "Smart Meter",
+    price: 3258673,
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
+    description:
+      "Professional-grade blood pressure monitoring system with cellular connectivity.",
+    createdAt: "2024-01-15",
+  },
+  {
+    id: 3,
+    name: "Smart Meter iGlucose Blood Glucose Monitoring System (GM291)",
+    brand: "Smart Meter",
+    price: 2560589,
+    originalPrice: 3983133,
+    discount: 36,
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
+    description:
+      "Accurate blood glucose measurements with automatic data transmission.",
+    createdAt: "2024-02-01",
+  },
+  {
+    id: 4,
+    name: "Transtek TeleRPM 4G Blood Pressure Monitor Gen 2",
+    brand: "Transtek MioConnect",
+    price: 2276079,
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
+    description: "Next-generation blood pressure monitor with 4G connectivity.",
+    createdAt: "2024-02-15",
+  },
+];
+
+function formatPrice(price: number) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price);
+}
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const [product, setProduct] = useState<(typeof products)[0] | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
 
   useEffect(() => {
-    const foundProduct = products.find((p) => p.id === Number(params.id));
-    if (foundProduct) {
-      setProduct(foundProduct);
+    // Ensure params.id exists and is a number
+    if (params?.id && !isNaN(Number(params.id))) {
+      const foundProduct = products.find((p) => p.id === Number(params.id));
+      if (foundProduct) {
+        setProduct(foundProduct);
+      }
     }
-  }, [params.id]);
+  }, [params?.id]);
 
   if (!product) {
     return (
@@ -62,11 +125,11 @@ export default function ProductDetailPage() {
             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
             <div className="flex items-baseline gap-2 mb-6">
               <span className="text-3xl font-bold">
-                ${product.price.toFixed(2)}
+                {formatPrice(product.price)}
               </span>
               {product.originalPrice && (
                 <span className="text-xl text-gray-500 line-through">
-                  ${product.originalPrice.toFixed(2)}
+                  {formatPrice(product.originalPrice)}
                 </span>
               )}
             </div>
@@ -75,14 +138,14 @@ export default function ProductDetailPage() {
               <div className="flex items-center border rounded-md">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 hover:bg-white"
+                  className="p-2 hover:bg-gray-100"
                 >
                   <Minus className="h-4 w-4" />
                 </button>
                 <span className="px-4 py-2 border-x">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 hover:bg-white"
+                  className="p-2 hover:bg-gray-100"
                 >
                   <Plus className="h-4 w-4" />
                 </button>
@@ -101,13 +164,13 @@ export default function ProductDetailPage() {
 
             <div className="flex items-center gap-4 mb-6">
               <span className="text-sm text-gray-600">Share:</span>
-              <button className="p-2 hover:bg-white rounded-full">
+              <button className="p-2 hover:bg-gray-100 rounded-full">
                 <Facebook className="h-5 w-5" />
               </button>
-              <button className="p-2 hover:bg-white rounded-full">
+              <button className="p-2 hover:bg-gray-100 rounded-full">
                 <Twitter className="h-5 w-5" />
               </button>
-              <button className="p-2 hover:bg-white rounded-full">
+              <button className="p-2 hover:bg-gray-100 rounded-full">
                 <Share2 className="h-5 w-5" />
               </button>
             </div>
@@ -143,25 +206,27 @@ export default function ProductDetailPage() {
         </div>
 
         <section className="mt-16">
-          <h2 className="text-2xl font-bold mb-8">You may also like</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold">You may also like</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map((product) => (
               <div
                 key={product.id}
-                className="relative h-[500px] flex flex-col"
+                className="relative w-full max-w-[291px] mx-auto"
               >
                 {product.discount && (
                   <div className="absolute top-2 left-2 bg-[#BA0C2F] text-white text-xs font-bold px-2 py-1 rounded">
                     Up to {product.discount}% off!
                   </div>
                 )}
-                <Link href={`/products/${product.id}`} className="block flex-1">
-                  <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-white p-4">
+                <Link href={`/products/${product.id}`} className="block">
+                  <div className="aspect-[291/400] mb-4 overflow-hidden rounded-lg bg-gray-100 p-4">
                     <Image
                       src={product.image || "/placeholder.svg"}
                       alt={product.name}
                       width={291}
-                      height={291}
+                      height={400}
                       className="w-full h-full object-contain transition-transform hover:scale-105"
                     />
                   </div>
@@ -171,11 +236,11 @@ export default function ProductDetailPage() {
                   </h3>
                   <div className="flex items-baseline gap-2 mb-4">
                     <span className="font-semibold">
-                      ${product.price.toFixed(2)}
+                      {formatPrice(product.price)}
                     </span>
                     {product.originalPrice && (
                       <span className="text-sm text-gray-500 line-through">
-                        ${product.originalPrice.toFixed(2)}
+                        {formatPrice(product.originalPrice)}
                       </span>
                     )}
                   </div>

@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "../components/layout";
-import { useRouter } from "next/navigation";
 import { Disc, Facebook, Twitter } from "lucide-react";
 import Link from "next/link";
 import AuthLayout from "../components/auth-layout";
@@ -15,7 +13,7 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
