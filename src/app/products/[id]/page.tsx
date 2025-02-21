@@ -20,6 +20,7 @@ const products: Product[] = [
     price: 2327808,
     originalPrice: 2586453,
     discount: 10,
+    category: "lte",
     image:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
     description:
@@ -31,6 +32,7 @@ const products: Product[] = [
     name: "Smart Meter iBloodPressure Blood Pressure Monitor (SMBP802)",
     brand: "Smart Meter",
     price: 3258673,
+    category: "lte",
     image:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
     description:
@@ -44,6 +46,7 @@ const products: Product[] = [
     price: 2560589,
     originalPrice: 3983133,
     discount: 36,
+    category: "lte",
     image:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
     description:
@@ -55,6 +58,7 @@ const products: Product[] = [
     name: "Transtek TeleRPM 4G Blood Pressure Monitor Gen 2",
     brand: "Transtek MioConnect",
     price: 2276079,
+    category: "lte",
     image:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
     description: "Next-generation blood pressure monitor with 4G connectivity.",

@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   originalPrice?: number;
   discount?: number;
+  category: "lte" | "scientific" | "medical";
   image: string;
   description: string;
   createdAt: string;

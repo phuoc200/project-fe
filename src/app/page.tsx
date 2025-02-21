@@ -3,7 +3,6 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import Layout from "./components/layout";
 import { HeroCarousel } from "./components/hero-carousel";
-import { TestimonialsCarousel } from "./components/testimonials-carousel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -185,8 +184,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      <TestimonialsCarousel />
 
       {/* Educational Resources */}
       <section className="py-16 px-4">

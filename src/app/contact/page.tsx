@@ -48,7 +48,7 @@ export default function ContactPage() {
               <p>
                 <strong>Email:</strong>
                 <br />
-                info@providenceclinic.com
+                support@providenceclinic.com
               </p>
               <p>
                 <strong>Hours:</strong>

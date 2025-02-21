@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const testimonials = [
@@ -49,7 +49,7 @@ export function TestimonialsCarousel() {
   return (
     <div className="bg-[linear-gradient(225deg,_rgba(51,_59,_67,_0.88)_8%,_rgba(41,_47,_54,_1)_56%,_rgba(20,_20,_20,_1)_92%)] py-16 px-4">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-center text-blue-400 mb-12">
+        <h2 className="text-3xl font-bold text-center text-blue-400 mb-8">
           Testimonials
         </h2>
 
@@ -64,18 +64,21 @@ export function TestimonialsCarousel() {
                   display: currentSlide === index ? "block" : "none",
                 }}
               >
-                <div className="flex justify-center mb-6">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-6 h-6 text-yellow-400 fill-current"
-                    />
-                  ))}
+                <div className="flex justify-center text-[#585c61] mb-4">
+                  <Quote className="h-10 w-10"></Quote>
                 </div>
                 <blockquote className="text-2xl md:text-4xl text-white font-light mb-8 max-w-4xl mx-auto">
                   {testimonial.quote}
                 </blockquote>
-                <div className="text-white">
+                <div className="flex justify-center mb-12 gap-2">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-8 h-8  text-white fill-current"
+                    />
+                  ))}
+                </div>
+                <div className="text-white mb-14">
                   <p className="font-semibold">{testimonial.author}</p>
                   <p className="text-gray-400">{testimonial.location}</p>
                 </div>
