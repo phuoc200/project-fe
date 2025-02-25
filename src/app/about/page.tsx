@@ -7,22 +7,22 @@ export default function AboutPage() {
     {
       name: "Dr. Lloyd Wilson",
       specialty: "NEUROLOGIST",
-      image: "/images/doctor1.jpg",
+      image: "https://medipls.netlify.app/img/doc-1.jpg",
     },
     {
       name: "Dr. Rachel Parker",
       specialty: "OPHTHALMOLOGIST",
-      image: "/images/doctor2.jpg",
+      image: "https://medipls.netlify.app/img/doc-2.jpg",
     },
     {
       name: "Dr. Ian Smith",
       specialty: "DENTIST",
-      image: "/images/doctor3.jpg",
+      image: "https://medipls.netlify.app/img/doc-3.jpg",
     },
     {
       name: "Dr. Alicia Henderson",
       specialty: "PEDIATRICIAN",
-      image: "/images/doctor4.jpg",
+      image: "https://medipls.netlify.app/img/doc-4.jpg",
     },
   ];
   return (

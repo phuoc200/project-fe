@@ -4,13 +4,23 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import PROVINCE_LOGO from "@/assets/images/province-logo.png";
-import type React from "react";
 import { ShoppingCarts } from "./shopping-cart";
 import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { UserCircle } from "lucide-react"; // Import icon
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [user, setUser] = useState<{ name: string; avatar?: string } | null>(
+    null
+  );
+
+  useEffect(() => {
+    // Giả sử dữ liệu user được lấy từ localStorage hoặc API
+    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+    setUser(storedUser);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -45,12 +55,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               ))}
             </nav>
             <div className="hidden md:flex items-center space-x-4">
-              <Link href="/login">
-                <Button variant="outline">Login</Button>
-              </Link>
-              <Link href="/register">
-                <Button>Register</Button>
-              </Link>
+              {user ? (
+                <Link href="/profile" className="flex items-center space-x-2">
+                  {user.avatar ? (
+                    <Image
+                      src={user.avatar}
+                      alt="User Avatar"
+                      width={32}
+                      height={32}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <UserCircle size={32} className="text-gray-600" />
+                  )}
+                  <span className="text-sm font-semibold">{user.name}</span>
+                </Link>
+              ) : (
+                <>
+                  <Link href="/login">
+                    <Button variant="outline">Login</Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button>Register</Button>
+                  </Link>
+                </>
+              )}
               <ShoppingCarts />
             </div>
           </div>
@@ -75,7 +104,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 We only accept returns if certain conditions are met, per our
                 return policy requirements.
               </div>
-              <div>Contact us: support@providenceclinic.com</div>
+              <div>Contact us: mailto:support@providenceclinic.com</div>
               <div>+1 (215) 398-1365</div>
             </div>
             <div className="space-y-4">
@@ -118,7 +147,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   placeholder="Your email"
                   className="text-[#adaead]"
                 ></Input>
-                <Button>Subcribe</Button>
+                <Button>Subscribe</Button>
               </div>
             </div>
           </div>

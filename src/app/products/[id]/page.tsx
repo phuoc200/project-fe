@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import Layout from "../../components/layout";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Facebook, Minus, Plus, Share2, Twitter } from "lucide-react";
@@ -10,68 +9,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/app/contexts/cart-context";
 import type { Product } from "@/types";
+import Layout from "@/app/components/layout";
+import { useProduct } from "@/hooks/use-products";
 
-// This would typically come from an API or database
-const products: Product[] = [
-  {
-    id: 1,
-    name: "BodyTrace Blood Pressure Monitor (BT106)",
-    brand: "BodyTrace",
-    price: 2327808,
-    originalPrice: 2586453,
-    discount: 10,
-    category: "lte",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
-    description:
-      "The BodyTrace Blood Pressure Monitor (BT106) is an FDA-cleared cellular-enabled blood pressure monitor.",
-    createdAt: "2024-01-01",
-  },
-  {
-    id: 2,
-    name: "Smart Meter iBloodPressure Blood Pressure Monitor (SMBP802)",
-    brand: "Smart Meter",
-    price: 3258673,
-    category: "lte",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
-    description:
-      "Professional-grade blood pressure monitoring system with cellular connectivity.",
-    createdAt: "2024-01-15",
-  },
-  {
-    id: 3,
-    name: "Smart Meter iGlucose Blood Glucose Monitoring System (GM291)",
-    brand: "Smart Meter",
-    price: 2560589,
-    originalPrice: 3983133,
-    discount: 36,
-    category: "lte",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
-    description:
-      "Accurate blood glucose measurements with automatic data transmission.",
-    createdAt: "2024-02-01",
-  },
-  {
-    id: 4,
-    name: "Transtek TeleRPM 4G Blood Pressure Monitor Gen 2",
-    brand: "Transtek MioConnect",
-    price: 2276079,
-    category: "lte",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
-    description: "Next-generation blood pressure monitor with 4G connectivity.",
-    createdAt: "2024-02-15",
-  },
-];
-
-function formatPrice(price: number) {
-  return new Intl.NumberFormat("vi-VN", {
+function formatPrice(price: number | null | undefined) {
+  if (price == null) return "N/A";
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "VND",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(price);
 }
 
@@ -80,28 +27,54 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
+  const {
+    products: relatedProducts,
+    loading,
+    error,
+    fetchProducts,
+  } = useProduct();
 
   useEffect(() => {
-    // Ensure params.id exists and is a number
-    if (params?.id && !isNaN(Number(params.id))) {
-      const foundProduct = products.find((p) => p.id === Number(params.id));
-      if (foundProduct) {
-        setProduct(foundProduct);
-      }
-    }
-  }, [params?.id]);
+    const fetchProductAndRelated = async () => {
+      if (params?.id && !isNaN(Number(params.id))) {
+        try {
+          const response = await fetch(`/api/products/${params.id}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch product");
+          }
+          const data: Product = await response.json();
+          setProduct(data);
 
-  if (!product) {
+          // Fetch related products
+          fetchProducts(1);
+        } catch (err) {
+          console.error("Error fetching product:", err);
+        }
+      }
+    };
+
+    fetchProductAndRelated();
+  }, [params?.id, fetchProducts]);
+
+  if (loading) {
     return (
       <Layout>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <p>Product not found</p>
+          <p>Loading...</p>
         </div>
       </Layout>
     );
   }
 
-  const relatedProducts = products.filter((p) => p.id !== product.id);
+  if (error || !product) {
+    return (
+      <Layout>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <p>{error || "Product not found"}</p>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -127,12 +100,18 @@ export default function ProductDetailPage() {
           <div>
             <p className="text-gray-600 mb-2">{product.brand}</p>
             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-            <div className="flex items-baseline gap-2 mb-6">
-              <span className="text-3xl font-bold">
-                {formatPrice(product.price)}
-              </span>
-              {product.originalPrice && (
-                <span className="text-xl text-gray-500 line-through">
+            <div className="flex items-baseline gap-2 mb-4">
+              {product.discount ? (
+                <>
+                  <span className="font-semibold">
+                    {formatPrice(product.price)}
+                  </span>
+                  <span className="text-sm text-gray-500 line-through">
+                    {formatPrice(product.originalPrice)}
+                  </span>
+                </>
+              ) : (
+                <span className="font-semibold">
                   {formatPrice(product.originalPrice)}
                 </span>
               )}
@@ -163,7 +142,7 @@ export default function ProductDetailPage() {
             </div>
 
             <Button className="w-full mb-4" variant="outline">
-              Buy now with ShopPay
+              Buy now with PayPal
             </Button>
 
             <div className="flex items-center gap-4 mb-6">

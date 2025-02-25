@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import Image from "next/image";
+import type React from "react";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,9 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -23,41 +21,30 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LayoutGrid, List } from "lucide-react";
 import type { Product, SortOption } from "@/types";
-
-function formatPrice(price: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(price);
-}
+import { ProductForm } from "@/app/components/product-form";
+import { ProductAdmin } from "@/app/components/product-admin";
+import { useProduct } from "@/hooks/use-products";
 
 export default function ProductManagementPage() {
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: 1,
-      name: "BodyTrace Blood Pressure Monitor (BT106)",
-      brand: "BodyTrace",
-      price: 99.99,
-      originalPrice: 109.99,
-      discount: 10,
-      category: "lte",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-18%20at%2004.12.04-OGPeuodkzcnG49loBCTvbUW1f9UwNH.png",
-      description:
-        "The BodyTrace Blood Pressure Monitor (BT106) is an FDA-cleared cellular-enabled blood pressure monitor.",
-      createdAt: "2024-01-01",
-    },
-  ]);
-
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [viewType, setViewType] = useState<"grid" | "list">("grid");
-  const [sortBy, setSortBy] = useState<SortOption>("best-selling");
-  const [activeTab, setActiveTab] = useState<"lte" | "scientific" | "medical">(
-    "lte"
-  );
+
+  const {
+    fetchProducts,
+    loading,
+    error,
+    currentPage,
+    totalPages,
+    activeTab,
+    sortBy,
+    setSortBy,
+    viewType,
+    setViewType,
+    editingProduct,
+    setEditingProduct,
+    handleTabChange,
+    handleDelete,
+    filteredAndSortedProducts,
+  } = useProduct();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,75 +56,46 @@ export default function ProductManagementPage() {
       brand: formData.get("brand") as string,
       category: formData.get("category") as "lte" | "scientific" | "medical",
       image: formData.get("image") as string,
-      originalPrice: Number(formData.get("originalPrice")) || undefined,
-      discount: Number(formData.get("discount")) || undefined,
+      originalPrice: Number(formData.get("originalPrice")) || null,
+      discount: Number(formData.get("discount")) || null,
       createdAt: editingProduct
         ? editingProduct.createdAt
         : new Date().toISOString(),
     };
 
-    if (editingProduct) {
-      // Update existing product
-      setProducts(
-        products.map((p) =>
-          p.id === editingProduct.id ? { ...p, ...productData } : p
-        )
-      );
-    } else {
-      // Add new product
-      setProducts([...products, { id: Date.now(), ...productData }]);
+    try {
+      const url = editingProduct
+        ? `/api/products/${editingProduct.id}`
+        : "/api/products";
+      const method = editingProduct ? "PUT" : "POST";
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(productData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save product");
+      }
+
+      fetchProducts(currentPage);
+    } catch (error) {
+      console.error("Error saving product:", error);
     }
 
     setEditingProduct(null);
     setIsDialogOpen(false);
   };
 
-  const handleDelete = (productId: number) => {
-    if (confirm("Are you sure you want to delete this product?")) {
-      setProducts(products.filter((p) => p.id !== productId));
-    }
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  const filteredAndSortedProducts = useMemo(() => {
-    let result = products.filter((product) => product.category === activeTab);
-
-    // Apply sorting
-    switch (sortBy) {
-      case "alphabetically-asc":
-        result.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "alphabetically-desc":
-        result.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      case "price-asc":
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case "date-asc":
-        result.sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-        break;
-      case "date-desc":
-        result.sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        break;
-      default:
-        break;
-    }
-
-    return result;
-  }, [activeTab, products, sortBy]);
-
-  const handleEdit = (product: Product) => {
-    setEditingProduct(product);
-    setIsDialogOpen(true);
-  };
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -151,11 +109,9 @@ export default function ProductManagementPage() {
       </div>
 
       <Tabs
-        defaultValue="lte"
+        defaultValue={activeTab}
         className="w-full"
-        onValueChange={(value) =>
-          setActiveTab(value as "lte" | "scientific" | "medical")
-        }
+        onValueChange={handleTabChange}
       >
         <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent mb-8">
           <TabsTrigger
@@ -253,165 +209,39 @@ export default function ProductManagementPage() {
                 }
               >
                 {filteredAndSortedProducts.map((product) => (
-                  <div
+                  <ProductAdmin
                     key={product.id}
-                    className={
-                      viewType === "list"
-                        ? "flex gap-6 border rounded-lg p-4"
-                        : "relative w-full max-w-[291px] mx-auto flex flex-col"
-                    }
-                  >
-                    {product.discount && (
-                      <div className="absolute top-2 left-2 bg-[#BA0C2F] text-white text-xs font-bold px-2 py-1 rounded z-10">
-                        Up to {product.discount}% off!
-                      </div>
-                    )}
-                    <div className={viewType === "list" ? "w-48" : "block"}>
-                      <div className="aspect-[291/400] mb-4 overflow-hidden rounded-lg bg-gray-100 p-4">
-                        <Image
-                          src={product.image || "/placeholder.svg"}
-                          alt={product.name}
-                          width={291}
-                          height={400}
-                          className="w-full h-full object-contain transition-transform hover:scale-105"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-1 flex flex-col">
-                      <p className="text-sm text-gray-600 mb-1">
-                        {product.brand}
-                      </p>
-                      <h3 className="font-medium mb-2 line-clamp-2 h-12">
-                        {product.name}
-                      </h3>
-                      <div className="flex items-baseline gap-2 mb-4 h-8">
-                        <span className="font-semibold">
-                          {formatPrice(product.price)}
-                        </span>
-                        {product.originalPrice && (
-                          <span className="text-sm text-gray-500 line-through">
-                            {formatPrice(product.originalPrice)}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex gap-2 mt-auto">
-                        <Button
-                          variant="outline"
-                          onClick={() => handleEdit(product)}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          onClick={() => handleDelete(product.id)}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
+                    product={product}
+                    viewType={viewType}
+                    onEdit={(product) => {
+                      setEditingProduct(product);
+                      setIsDialogOpen(true);
+                    }}
+                    onDelete={handleDelete}
+                  />
                 ))}
               </div>
             </div>
           </TabsContent>
         ))}
       </Tabs>
+      <div className="mt-8 flex justify-center">
+        <Button
+          onClick={() => fetchProducts(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+        <span className="mx-4">
+          Page {currentPage} of {totalPages}
+        </span>
+        <Button
+          onClick={() => fetchProducts(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </Button>
+      </div>
     </div>
-  );
-}
-
-interface ProductFormProps {
-  product: Product | null;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-}
-
-function ProductForm({ product, onSubmit }: ProductFormProps) {
-  const [price, setPrice] = useState(product?.price || 0);
-  const [originalPrice, setOriginalPrice] = useState(
-    product?.originalPrice || 0
-  );
-  const [discount, setDiscount] = useState(product?.discount || 0);
-
-  useEffect(() => {
-    if (originalPrice && discount) {
-      const discountedPrice = originalPrice * (1 - discount / 100);
-      setPrice(Number(discountedPrice.toFixed(2)));
-    }
-  }, [originalPrice, discount]);
-
-  return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="name">Product Name</Label>
-        <Input id="name" name="name" defaultValue={product?.name} required />
-      </div>
-      <div>
-        <Label htmlFor="originalPrice">Original Price (USD)</Label>
-        <Input
-          id="originalPrice"
-          name="originalPrice"
-          type="number"
-          step="0.01"
-          value={originalPrice}
-          onChange={(e) => setOriginalPrice(Number(e.target.value))}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="discount">Discount (%)</Label>
-        <Input
-          id="discount"
-          name="discount"
-          type="number"
-          value={discount}
-          onChange={(e) => setDiscount(Number(e.target.value))}
-        />
-      </div>
-      <div>
-        <Label htmlFor="price">Final Price (USD)</Label>
-        <Input
-          id="price"
-          name="price"
-          type="number"
-          step="0.01"
-          value={price}
-          onChange={(e) => setPrice(Number(e.target.value))}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          id="description"
-          name="description"
-          defaultValue={product?.description}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="brand">Brand</Label>
-        <Input id="brand" name="brand" defaultValue={product?.brand} required />
-      </div>
-      <div>
-        <Label htmlFor="category">Category</Label>
-        <Select name="category" defaultValue={product?.category || "lte"}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="lte">LTE</SelectItem>
-            <SelectItem value="scientific">Scientific</SelectItem>
-            <SelectItem value="medical">Medical</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div>
-        <Label htmlFor="image">Image URL</Label>
-        <Input id="image" name="image" defaultValue={product?.image} required />
-      </div>
-      <Button type="submit" className="w-full">
-        {product ? "Update Product" : "Add Product"}
-      </Button>
-    </form>
   );
 }

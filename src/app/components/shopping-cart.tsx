@@ -201,26 +201,6 @@ export function ShoppingCarts() {
                 >
                   Checkout - {formatCurrency(total)}
                 </Button>
-                <div className="grid grid-cols-2 gap-4">
-                  <Button variant="outline" className="w-full">
-                    <Image
-                      src="/shop-pay-logo.png"
-                      alt="Shop Pay"
-                      width={80}
-                      height={32}
-                      className="h-8"
-                    />
-                  </Button>
-                  <Button variant="outline" className="w-full">
-                    <Image
-                      src="/google-pay-logo.png"
-                      alt="Google Pay"
-                      width={80}
-                      height={32}
-                      className="h-8"
-                    />
-                  </Button>
-                </div>
               </div>
             </div>
           )}

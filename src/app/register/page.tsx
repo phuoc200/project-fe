@@ -4,42 +4,37 @@ import { useState } from "react";
 import { Disc, Facebook, Twitter } from "lucide-react";
 import Link from "next/link";
 import AuthLayout from "../components/auth-layout";
-// const handleSubmit = (e: React.FormEvent) => {
-//   e.preventDefault();
-//   router.push("profile");
-// };
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const router = useRouter(); // Khai báo router để điều hướng
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // router.push("profile");
     setLoading(true);
     setError("");
     setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:5134/api/Auth/register", {
+      const response = await fetch("http://localhost:5000/api/Auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setSuccess("Đăng ký thành công!");
-        console.log("Register success:", data);
+        setSuccess("Đăng ký thành công! Vui lòng đăng nhập.");
+        router.push("/login");
       } else {
         setError(data.message || "Có lỗi xảy ra, vui lòng thử lại!");
       }
@@ -60,8 +55,8 @@ export default function RegisterPage() {
         <div className="mb-4">
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required

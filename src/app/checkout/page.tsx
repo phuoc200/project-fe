@@ -181,11 +181,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex items-center space-x-2 border p-4 rounded-lg">
                   <RadioGroupItem value="bank-transfer" id="bank-transfer" />
-                  <Label htmlFor="bank-transfer">Bank Transfer</Label>
-                </div>
-                <div className="flex items-center space-x-2 border p-4 rounded-lg">
-                  <RadioGroupItem value="momo" id="momo" />
-                  <Label htmlFor="momo">MoMo</Label>
+                  <Label htmlFor="bank-transfer">Paypal</Label>
                 </div>
               </RadioGroup>
             </div>

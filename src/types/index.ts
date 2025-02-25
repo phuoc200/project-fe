@@ -3,11 +3,11 @@ export interface Product {
   name: string;
   brand: string;
   price: number;
-  originalPrice?: number;
-  discount?: number;
+  originalPrice: number | null;
+  discount: number | null;
   category: "lte" | "scientific" | "medical";
   image: string;
-  description: string;
+  description: string | null;
   createdAt: string;
 }
 
@@ -32,4 +32,12 @@ export interface CartItem {
 export interface OrderNote {
   cartId: string;
   note: string;
+}
+
+export interface PaginatedProducts {
+  totalProducts: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  products: Product[];
 }

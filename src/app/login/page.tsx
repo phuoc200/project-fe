@@ -7,39 +7,37 @@ import { Disc, Facebook, Twitter } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminLoginPage() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); // Khai báo router để điều hướng
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); // Reset lỗi trước khi gửi request
+    setError(null);
 
     try {
-      const response = await fetch("http://localhost:5134/api/Auth/login", {
+      const response = await fetch("http://localhost:5000/api/Auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         console.log("Login thành công:", data);
-        // localStorage.setItem("token", data.data.token);
-        // localStorage.setItem("role", data.data.role);
 
-        // Chuyển hướng dựa vào Role
-        // if (data.data.role === "Admin") {
-        //   router.push("/admin/dashboard"); // Điều hướng đến trang Admin
-        // } else {
-        //   router.push("/user/dashboard"); // Điều hướng đến trang User
-        // }
-        if (data) {
-          router.push("/admin/dashboard"); // Điều hướng đến trang Admin
+        localStorage.setItem("token", data.token);
+
+        if (data.user.roleId === 1) {
+          router.push("/admin/products");
+        } else if (data.user.roleId === 2) {
+          router.push("/");
+        } else {
+          setError("Tài khoản không có quyền truy cập.");
         }
       } else {
         setError(data.message || "Đăng nhập thất bại");
@@ -57,11 +55,11 @@ export default function AdminLoginPage() {
       <form onSubmit={handleSubmit} className="w-full max-w-md">
         <div className="mb-4">
           <input
-            type="text"
-            placeholder="Username"
+            type="email"
+            placeholder="Email"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -83,7 +81,7 @@ export default function AdminLoginPage() {
         </button>
       </form>
       <div className="mt-4 text-center">
-        <Link href="/reset-password" className="text-blue-600 hover:underline">
+        <Link href="/forgot-password" className="text-blue-600 hover:underline">
           Forgot password?
         </Link>
       </div>
