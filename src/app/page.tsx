@@ -7,8 +7,8 @@ import Layout from "./components/layout";
 import { HeroCarousel } from "./components/hero-carousel";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
-import { useProducts } from "@/hooks/use-products";
 import { ProductGrid } from "./components/product-grid";
+import { useProduct } from "@/hooks/use-products";
 
 const educationalResources = [
   {
@@ -45,7 +45,7 @@ const educationalResources = [
 ];
 
 export default function HomePage() {
-  const { products, loading, error, fetchProducts } = useProducts("");
+  const { products, loading, error, fetchProducts } = useProduct();
 
   useEffect(() => {
     fetchProducts(1);
