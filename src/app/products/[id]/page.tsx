@@ -213,27 +213,37 @@ export default function ProductDetailPage() {
                       className="w-full h-full object-contain transition-transform hover:scale-105"
                     />
                   </div>
+                </Link>
+                <div className="flex-1 flex flex-col">
                   <p className="text-sm text-gray-600 mb-1">{product.brand}</p>
-                  <h3 className="font-medium mb-2 hover:text-blue-600 line-clamp-2">
-                    {product.name}
-                  </h3>
+                  <Link href={`/products/${product.id}`} className="flex-grow">
+                    <h3 className="font-medium mb-2 hover:text-blue-600 line-clamp-2 h-12">
+                      {product.name}
+                    </h3>
+                  </Link>
                   <div className="flex items-baseline gap-2 mb-4">
-                    <span className="font-semibold">
-                      {formatPrice(product.price)}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-sm text-gray-500 line-through">
+                    {product.discount ? (
+                      <>
+                        <span className="font-semibold">
+                          {formatPrice(product.price)}
+                        </span>
+                        <span className="text-sm text-gray-500 line-through">
+                          {formatPrice(product.originalPrice)}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="font-semibold">
                         {formatPrice(product.originalPrice)}
                       </span>
                     )}
                   </div>
-                </Link>
-                <Button
-                  onClick={() => addItem({ ...product, quantity: 1 })}
-                  className="w-full bg-black hover:bg-gray-800"
-                >
-                  Add to cart
-                </Button>
+                  <Button
+                    onClick={() => addItem({ ...product, quantity: 1 })}
+                    className="w-full bg-black hover:bg-gray-800"
+                  >
+                    Add to cart
+                  </Button>
+                </div>
               </div>
             ))}
           </div>

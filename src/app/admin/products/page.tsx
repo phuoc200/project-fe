@@ -49,15 +49,16 @@ export default function ProductManagementPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const productData: Omit<Product, "id"> = {
+    const productData: Partial<Product> = {
+      id: editingProduct ? editingProduct.id : undefined,
       name: formData.get("name") as string,
       price: Number(formData.get("price")),
       description: formData.get("description") as string,
       brand: formData.get("brand") as string,
       category: formData.get("category") as "lte" | "scientific" | "medical",
       image: formData.get("image") as string,
-      originalPrice: Number(formData.get("originalPrice")) || null,
-      discount: Number(formData.get("discount")) || null,
+      originalPrice: Number(formData.get("originalPrice")) || undefined,
+      discount: Number(formData.get("discount")) || undefined,
       createdAt: editingProduct
         ? editingProduct.createdAt
         : new Date().toISOString(),
@@ -77,16 +78,19 @@ export default function ProductManagementPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save product");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to save product");
       }
 
-      fetchProducts(currentPage);
+      await fetchProducts(currentPage);
+      setEditingProduct(null);
+      setIsDialogOpen(false);
     } catch (error) {
       console.error("Error saving product:", error);
+      alert(
+        error instanceof Error ? error.message : "An unknown error occurred"
+      );
     }
-
-    setEditingProduct(null);
-    setIsDialogOpen(false);
   };
 
   if (loading) {

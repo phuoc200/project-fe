@@ -42,10 +42,18 @@ export function ProductAdmin({
       <div className="flex-1 flex flex-col">
         <p className="text-sm text-gray-600 mb-1">{product.brand}</p>
         <h3 className="font-medium mb-2 line-clamp-2 h-12">{product.name}</h3>
-        <div className="flex items-baseline gap-2 mb-4 h-8">
-          <span className="font-semibold">{formatPrice(product.price)}</span>
-          {product.originalPrice && (
-            <span className="text-sm text-gray-500 line-through">
+        <div className="flex items-baseline gap-2 mb-4">
+          {product.discount ? (
+            <>
+              <span className="font-semibold">
+                {formatPrice(product.price)}
+              </span>
+              <span className="text-sm text-gray-500 line-through">
+                {formatPrice(product.originalPrice)}
+              </span>
+            </>
+          ) : (
+            <span className="font-semibold">
               {formatPrice(product.originalPrice)}
             </span>
           )}

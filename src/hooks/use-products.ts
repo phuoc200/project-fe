@@ -80,7 +80,7 @@ export function useProduct() {
     }
 
     return result;
-  }, [products, selectedBrands, sortBy]);
+  }, [products, activeTab, selectedBrands, sortBy]);
 
   const toggleBrand = (brand: string) => {
     setSelectedBrands((prev) =>

@@ -13,77 +13,32 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import type { CartItem } from "@/types";
-import { formatCurrency } from "@/lib/utils";
+import { useCart } from "@/app/contexts/cart-context";
+
+function formatPrice(price: number | null | undefined) {
+  if (price == null) return "N/A";
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price);
+}
 
 export function ShoppingCarts() {
   const [isOpen, setIsOpen] = useState(false);
   const [orderNote, setOrderNote] = useState("");
   const router = useRouter();
+  const { items, removeItem, updateQuantity } = useCart();
 
-  // This would typically come from a global state management solution
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 1,
-      productId: 1,
-      name: "Anew Weight Scale",
-      price: 2162274,
-      quantity: 1,
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-17%20at%2008.48.42-yU23Vh6yMBlYIUK3olmToizze2HxqY.png",
-    },
-    // Adding more items to demonstrate scrolling
-    {
-      id: 2,
-      productId: 2,
-      name: "Digital Blood Pressure Monitor",
-      price: 1500000,
-      quantity: 1,
-      image: "/placeholder.svg",
-    },
-    {
-      id: 3,
-      productId: 3,
-      name: "Smart Health Watch",
-      price: 2000000,
-      quantity: 1,
-      image: "/placeholder.svg",
-    },
-    {
-      id: 4,
-      productId: 4,
-      name: "Digital Thermometer",
-      price: 500000,
-      quantity: 1,
-      image: "/placeholder.svg",
-    },
-  ]);
-
-  const updateQuantity = (itemId: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeItem = (itemId: number) => {
-    setCartItems((items) => items.filter((item) => item.id !== itemId));
-  };
-
-  const total = cartItems.reduce(
+  const total = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
   const handleCheckout = () => {
     if (orderNote) {
-      // const note: OrderNote = {
-      //   cartId: "cart-id",
-      //   note: orderNote,
-      // };
-      // Save note to your backend
+      // Save note logic would go here
     }
     router.push("/checkout");
   };
@@ -94,7 +49,7 @@ export function ShoppingCarts() {
         <Button variant="outline" size="icon" className="relative">
           <ShoppingCart className="h-4 w-4" />
           <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
-            {cartItems.length}
+            {items.length}
           </span>
         </Button>
       </SheetTrigger>
@@ -109,7 +64,7 @@ export function ShoppingCarts() {
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto py-6 px-6">
-            {cartItems.length === 0 ? (
+            {items.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-600">Your cart is empty</p>
                 <Button
@@ -122,7 +77,7 @@ export function ShoppingCarts() {
               </div>
             ) : (
               <div className="space-y-6">
-                {cartItems.map((item) => (
+                {items.map((item) => (
                   <div key={item.id} className="flex gap-4">
                     <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden">
                       <Image
@@ -136,7 +91,7 @@ export function ShoppingCarts() {
                     <div className="flex-1">
                       <h3 className="font-medium text-sm">{item.name}</h3>
                       <p className="text-sm text-gray-600 mt-1">
-                        {formatCurrency(item.price)}
+                        {formatPrice(item.price)}
                       </p>
                       <div className="flex items-center gap-2 mt-2">
                         <div className="flex items-center border rounded-md">
@@ -185,12 +140,12 @@ export function ShoppingCarts() {
           </div>
 
           {/* Fixed Footer */}
-          {cartItems.length > 0 && (
+          {items.length > 0 && (
             <div className="border-t p-6 bg-white">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <p className="text-sm text-gray-600">Subtotal</p>
-                  <p className="font-medium">{formatCurrency(total)}</p>
+                  <p className="font-medium">{formatPrice(total)}</p>
                 </div>
                 <p className="text-sm text-gray-600">
                   Taxes and shipping calculated at checkout.
@@ -199,7 +154,7 @@ export function ShoppingCarts() {
                   className="w-full bg-black hover:bg-gray-800"
                   onClick={handleCheckout}
                 >
-                  Checkout - {formatCurrency(total)}
+                  Checkout - {formatPrice(total)}
                 </Button>
               </div>
             </div>

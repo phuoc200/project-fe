@@ -12,6 +12,15 @@ interface ProductGridProps {
 export function ProductGrid({ products, viewType }: ProductGridProps) {
   const { addItem } = useCart();
 
+  const handleAddToCart = (product: Product) => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price || product.originalPrice,
+      image: product.image || "/placeholder.svg",
+    });
+  };
+
   return (
     <div
       className={
@@ -72,7 +81,7 @@ export function ProductGrid({ products, viewType }: ProductGridProps) {
               )}
             </div>
             <Button
-              onClick={() => addItem({ ...product, quantity: 1 })}
+              onClick={() => handleAddToCart(product)}
               className="w-full bg-black hover:bg-gray-800"
             >
               Add to cart
