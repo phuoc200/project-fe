@@ -137,7 +137,7 @@ export default function ProductsPage() {
           {["lte", "scientific", "medical"].map((category) => (
             <TabsContent key={category} value={category} className="mt-0">
               <div className="lg:grid lg:grid-cols-[240px_1fr] gap-8">
-                <div className="hidden lg:block">
+                <div className="hidden lg:block border-r border-gray-200">
                   <div className="sticky top-4">
                     <h3 className="font-semibold mb-4">Brand</h3>
                     <div className="space-y-3">

@@ -30,7 +30,7 @@ export function ProductAdmin({
         </div>
       )}
       <div className={viewType === "list" ? "w-48 relative" : "block relative"}>
-        <div className="aspect-[291/400] mb-4 overflow-hidden rounded-lg bg-gray-100 p-4">
+        <div className="aspect-[291/400] mb-4 overflow-hidden rounded-lg bg-white p-4">
           <Image
             src={product.image || "/placeholder.svg"}
             alt={product.name}

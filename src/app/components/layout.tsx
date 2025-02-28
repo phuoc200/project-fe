@@ -88,8 +88,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-none border-b-2 border-transparent hover:border-gray-400 py-5 text-[#2a2b2a] font-semibold ${
-                    pathname === item.href ? "border-black" : ""
+                  className={`rounded-none border-b-2 border-transparent hover:border-gray-400 py-5 text-[#2a2b2a] font-semibold hover:text-[#2a2b2a] focus:outline-none ${
+                    pathname === item.href
+                      ? "border-[#000000]"
+                      : "border-transparent"
                   }`}
                 >
                   {item.label}

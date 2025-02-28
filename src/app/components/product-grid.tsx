@@ -48,7 +48,7 @@ export function ProductGrid({ products, viewType }: ProductGridProps) {
             href={`/products/${product.id}`}
             className={viewType === "list" ? "w-48" : "block"}
           >
-            <div className="aspect-[291/400] mb-4 overflow-hidden rounded-lg bg-gray-100 p-4">
+            <div className="aspect-[291/400] mb-4 overflow-hidden rounded-lg bg-white p-4">
               <Image
                 src={product.image || "/placeholder.svg"}
                 alt={product.name}
@@ -65,20 +65,16 @@ export function ProductGrid({ products, viewType }: ProductGridProps) {
                 {product.name}
               </h3>
             </Link>
-            <div className="flex items-baseline gap-2 mb-4">
+            <div className="flex items-baseline gap-2 my-4 pt-4 border-t font-semibold text-lg border-gray-200">
               {product.discount ? (
                 <>
-                  <span className="font-semibold">
-                    {formatPrice(product.price)}
-                  </span>
-                  <span className="text-sm text-gray-500 line-through">
+                  <span>{formatPrice(product.price)}</span>
+                  <span className="text-sm text-gray-500 font-normal line-through">
                     {formatPrice(product.originalPrice)}
                   </span>
                 </>
               ) : (
-                <span className="font-semibold">
-                  {formatPrice(product.originalPrice)}
-                </span>
+                <span>{formatPrice(product.originalPrice)}</span>
               )}
             </div>
             <Button
