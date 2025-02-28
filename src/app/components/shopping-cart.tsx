@@ -14,16 +14,7 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/app/contexts/cart-context";
-
-function formatPrice(price: number | null | undefined) {
-  if (price == null) return "N/A";
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(price);
-}
+import { formatPrice } from "@/lib/utils";
 
 export function ShoppingCarts() {
   const [isOpen, setIsOpen] = useState(false);

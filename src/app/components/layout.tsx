@@ -110,21 +110,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </button>
 
                   <div
-                    className={`absolute right-0 mt-2 w-40 bg-white shadow-md rounded-md transition-opacity duration-200 ${
+                    className={`absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg transition-opacity duration-200 ${
                       isDropdownOpen
-                        ? "opacity-100 visible"
-                        : "opacity-0 invisible"
-                    } z-50`}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
+                        ? "opacity-100 visible scale-100"
+                        : "opacity-0 invisible scale-95"
+                    } z-50 transform origin-top-right`}
                   >
-                    <div className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
-                      <div>{user.username}</div>
-                      <div>{user.email}</div>
+                    <div className="block px-6 py-3 text-gray-800 hover:bg-gray-50">
+                      <div className="font-medium text-lg">{user.username}</div>
+                      <div className="text-sm text-gray-500">{user.email}</div>
                     </div>
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center"
+                      className="w-full text-left px-6 py-3 text-gray-800 hover:bg-gray-100 flex items-center rounded-b-lg transition-colors"
                     >
                       <LogOut className="w-4 h-4 mr-2" />
                       Logout

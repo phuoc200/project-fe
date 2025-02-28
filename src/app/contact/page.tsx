@@ -38,12 +38,12 @@ export default function ContactPage() {
               <p>
                 <strong>Address:</strong>
                 <br />
-                123 Medical Street, Health City, HC 12345
+                No. 8 Ton That Thuyet, Cau Giay District, Hanoi City
               </p>
               <p>
                 <strong>Phone:</strong>
                 <br />
-                (123) 456-7890
+                +1 (215) 398-1365
               </p>
               <p>
                 <strong>Email:</strong>

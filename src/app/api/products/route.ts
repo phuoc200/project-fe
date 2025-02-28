@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const pageNumber = Number(searchParams.get("pageNumber") || "1");
-  const pageSize = Number(searchParams.get("pageSize") || "6");
+  const pageSize = Number(searchParams.get("pageSize") || "8");
   const category = searchParams.get("category") || "";
 
   try {

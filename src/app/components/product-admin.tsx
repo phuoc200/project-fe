@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/types";
+import { formatPrice } from "@/lib/utils";
 
 interface ProductAdminProps {
   product: Product;
@@ -69,13 +70,4 @@ export function ProductAdmin({
       </div>
     </div>
   );
-}
-
-function formatPrice(price: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(price);
 }

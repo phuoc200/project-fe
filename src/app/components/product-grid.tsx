@@ -3,6 +3,7 @@ import { useCart } from "@/app/contexts/cart-context";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/utils";
 
 interface ProductGridProps {
   products: Product[];
@@ -91,14 +92,4 @@ export function ProductGrid({ products, viewType }: ProductGridProps) {
       ))}
     </div>
   );
-}
-
-function formatPrice(price: number | null | undefined) {
-  if (price == null) return "N/A";
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(price);
 }

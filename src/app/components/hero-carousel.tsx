@@ -9,21 +9,24 @@ const slides = [
     image:
       "https://thedigitalhealthstore.com/cdn/shop/files/doctors-medical-gear.jpg?v=1634658928&width=4000",
     title: "Welcome to Providence Clinic",
-    description: "Your trusted partner in healthcare technology",
+    description:
+      "At Providence Clinic, we prioritize your health with innovative healthcare technology, ensuring a personalized and seamless experience from consultation to treatment. Our expert team and advanced solutions are dedicated to enhancing your well-being.",
   },
   {
     id: 2,
     image:
       "https://thedigitalhealthstore.com/cdn/shop/files/TDHS-Home_Hero--10.webp?v=1696346876&width=4000",
     title: "Advanced Medical Equipment",
-    description: "Discover our range of cutting-edge medical devices",
+    description:
+      "Explore our extensive range of high-quality, state-of-the-art medical devices, designed to deliver precision, reliability, and optimal results. Our equipment empowers healthcare professionals to provide the best care possible with cutting-edge technology.",
   },
   {
     id: 3,
     image:
       "https://thedigitalhealthstore.com/cdn/shop/files/TDHS-Home_Hero--06.webp?v=1696346101&width=4000",
     title: "Professional Healthcare",
-    description: "Expert care with state-of-the-art technology",
+    description:
+      "Experience world-class healthcare services backed by expert professionals and the latest in medical technology. We are committed to delivering exceptional care, ensuring that your health needs are met with the highest standards of professionalism and innovation.",
   },
 ];
 

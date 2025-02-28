@@ -1,70 +1,22 @@
 "use client";
 
-import type React from "react";
-
-import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { formatCurrency } from "@/lib/utils";
-
-interface CheckoutForm {
-  email: string;
-  firstName: string;
-  lastName: string;
-  address: string;
-  apartment?: string;
-  city: string;
-  country: string;
-  phone: string;
-  paymentMethod: "cod" | "bank-transfer" | "momo";
-}
+import { useCheckout } from "@/hooks/use-checkout";
+import { formatPrice } from "@/lib/utils";
 
 export default function CheckoutPage() {
-  const [form, setForm] = useState<CheckoutForm>({
-    email: "",
-    firstName: "",
-    lastName: "",
-    address: "",
-    apartment: "",
-    city: "",
-    country: "Vietnam",
-    phone: "",
-    paymentMethod: "cod",
-  });
-
-  // This would come from your cart management system
-  const cartItems = [
-    {
-      id: 1,
-      name: "Anew Weight Scale", //Fixed the name issue
-      price: 2162274,
-      quantity: 1,
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-17%20at%2008.48.42-yU23Vh6yMBlYIUK3olmToizze2HxqY.png",
-    },
-  ];
-
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  const shipping = 0; // Free shipping
-  const total = subtotal + shipping;
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle order submission
-    console.log("Order submitted:", { form, items: cartItems });
-  };
+  const { form, setForm, items, subtotal, shipping, total, handleCheckout } =
+    useCheckout();
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="order-2 lg:order-1">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleCheckout} className="space-y-6">
             <div>
               <h2 className="text-lg font-medium mb-4">Contact information</h2>
               <div className="space-y-4">
@@ -170,7 +122,7 @@ export default function CheckoutPage() {
               <h2 className="text-lg font-medium mb-4">Payment method</h2>
               <RadioGroup
                 value={form.paymentMethod}
-                onValueChange={(value: CheckoutForm["paymentMethod"]) =>
+                onValueChange={(value: "cod" | "paypal") =>
                   setForm({ ...form, paymentMethod: value })
                 }
                 className="space-y-4"
@@ -180,8 +132,8 @@ export default function CheckoutPage() {
                   <Label htmlFor="cod">Cash on Delivery (COD)</Label>
                 </div>
                 <div className="flex items-center space-x-2 border p-4 rounded-lg">
-                  <RadioGroupItem value="bank-transfer" id="bank-transfer" />
-                  <Label htmlFor="bank-transfer">Paypal</Label>
+                  <RadioGroupItem value="paypal" id="paypal" />
+                  <Label htmlFor="paypal">PayPal</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -194,7 +146,7 @@ export default function CheckoutPage() {
 
         <div className="order-1 lg:order-2 bg-gray-100 p-6 rounded-lg">
           <div className="space-y-4">
-            {cartItems.map((item) => (
+            {items.map((item) => (
               <div key={item.id} className="flex gap-4">
                 <div className="relative w-20 h-20 bg-white rounded-lg">
                   <Image
@@ -209,7 +161,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium">{item.name}</h3>
-                  <p className="text-gray-600">{formatCurrency(item.price)}</p>
+                  <p className="text-gray-600">{formatPrice(item.price)}</p>
                 </div>
               </div>
             ))}
@@ -217,17 +169,15 @@ export default function CheckoutPage() {
             <div className="border-t pt-4 space-y-2">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>{formatCurrency(subtotal)}</span>
+                <span>{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>
-                  {shipping === 0 ? "Free" : formatCurrency(shipping)}
-                </span>
+                <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
               </div>
               <div className="flex justify-between font-medium text-lg border-t pt-2">
                 <span>Total</span>
-                <span>{formatCurrency(total)}</span>
+                <span>{formatPrice(total)}</span>
               </div>
             </div>
           </div>

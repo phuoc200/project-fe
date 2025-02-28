@@ -11,16 +11,7 @@ import { useCart } from "@/app/contexts/cart-context";
 import type { Product } from "@/types";
 import Layout from "@/app/components/layout";
 import { useProduct } from "@/hooks/use-products";
-
-function formatPrice(price: number | null | undefined) {
-  if (price == null) return "N/A";
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(price);
-}
+import { formatPrice } from "@/lib/utils";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -33,6 +24,20 @@ export default function ProductDetailPage() {
     error,
     fetchProducts,
   } = useProduct();
+
+  // const urlToShare = "https://your-website.com";
+  const facebookShareLink = `https://www.facebook.com/login/`;
+  const twitterShareLink = `https://twitter.com/login?`;
+  const linkedinShareLink = `https://www.linkedin.com/login`;
+
+  const handleAddToCart = (product: Product) => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price || product.originalPrice,
+      image: product.image || "/placeholder.svg",
+    });
+  };
 
   useEffect(() => {
     const fetchProductAndRelated = async () => {
@@ -135,27 +140,48 @@ export default function ProductDetailPage() {
               </div>
               <Button
                 className="flex-1 bg-black hover:bg-gray-800"
-                onClick={() => addItem({ ...product, quantity })}
+                onClick={() => handleAddToCart(product)}
               >
                 Add to cart
               </Button>
             </div>
 
-            <Button className="w-full mb-4" variant="outline">
+            {/* <Button className="w-full mb-4" variant="outline">
               Buy now with PayPal
-            </Button>
+            </Button> */}
 
             <div className="flex items-center gap-4 mb-6">
               <span className="text-sm text-gray-600">Share:</span>
-              <button className="p-2 hover:bg-gray-100 rounded-full">
+
+              {/* Facebook Share Button */}
+              <a
+                href={facebookShareLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
                 <Facebook className="h-5 w-5" />
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded-full">
+              </a>
+
+              {/* Twitter Share Button */}
+              <a
+                href={twitterShareLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
                 <Twitter className="h-5 w-5" />
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded-full">
+              </a>
+
+              {/* LinkedIn Share Button */}
+              <a
+                href={linkedinShareLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
                 <Share2 className="h-5 w-5" />
-              </button>
+              </a>
             </div>
 
             <Tabs defaultValue="description" className="mt-8">
@@ -238,7 +264,7 @@ export default function ProductDetailPage() {
                     )}
                   </div>
                   <Button
-                    onClick={() => addItem({ ...product, quantity: 1 })}
+                    onClick={() => handleAddToCart(product)}
                     className="w-full bg-black hover:bg-gray-800"
                   >
                     Add to cart

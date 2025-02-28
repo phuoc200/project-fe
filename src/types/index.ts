@@ -41,3 +41,20 @@ export interface PaginatedProducts {
   totalPages: number;
   products: Product[];
 }
+
+export interface Order {
+  orderId: number;
+  orderDate: string;
+  totalAmount: number;
+  status: string;
+  customerName?: string;
+  products?: Product[];
+  payment?: {
+    paymentMethod: string;
+    paymentStatus: string;
+    paymentDate: string;
+    amount: number;
+  };
+}
+
+export type OrderStatus = "delivered" | "pending" | "canceled";
