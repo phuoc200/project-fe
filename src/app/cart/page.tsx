@@ -1,24 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Textarea } from "@/components/ui/textarea";
-import { useCart } from "@/app/contexts/cart-context";
+import Image from "next/image";
+import { useCart } from "../contexts/cart-context";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import Layout from "../components/layout";
 import Link from "next/link";
 
-export function ShoppingCarts() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [orderNote, setOrderNote] = useState("");
+export default function Cart() {
   const { items, removeItem, updateQuantity } = useCart();
 
   const total = items.reduce(
@@ -27,44 +18,14 @@ export function ShoppingCarts() {
   );
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="relative">
-          <ShoppingCart className="h-4 w-4" />
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
-            {items.length}
-          </span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-lg p-0">
-        <div className="flex flex-col h-full">
-          {/* Fixed Header */}
-          <div className="p-6 border-b">
-            <SheetHeader>
-              <SheetTitle className="text-xl flex items-center justify-between font-bold">
-                <span>Your cart</span>
-                <Link
-                  href="/cart"
-                  className="underline text-sm font-normal mr-6"
-                >
-                  View cart
-                </Link>
-              </SheetTitle>
-            </SheetHeader>
-          </div>
-
-          {/* Scrollable Content */}
+    <Layout>
+      <div className="max-w-7xl mx-auto py-10 px-4">
+        <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
+        <div className="grid md:grid-cols-2 gap-6">
           <div className="flex-1 overflow-y-auto py-6 px-6">
             {items.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-600">Your cart is empty</p>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Continue Shopping
-                </Button>
               </div>
             ) : (
               <div className="space-y-6">
@@ -119,41 +80,33 @@ export function ShoppingCarts() {
                     </div>
                   </div>
                 ))}
-
-                <div className="border-t pt-4">
-                  <label className="text-sm font-medium">Add order note</label>
-                  <Textarea
-                    placeholder="Special instructions for your order"
-                    value={orderNote}
-                    onChange={(e) => setOrderNote(e.target.value)}
-                    className="mt-2"
-                  />
-                </div>
               </div>
             )}
           </div>
-
-          {/* Fixed Footer */}
-          {items.length > 0 && (
-            <div className="border-t p-6 bg-white">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <p className="text-sm text-gray-600">Subtotal</p>
-                  <p className="font-medium">{formatPrice(total)}</p>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Taxes and shipping calculated at checkout.
-                </p>
-                <Link href="/checkout">
-                  <Button className="w-full bg-black hover:bg-gray-800">
-                    Checkout - {formatPrice(total)}
-                  </Button>
-                </Link>
+          <Card>
+            <CardHeader>
+              <CardTitle>Order Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-between mb-2">
+                <span>Subtotal</span>
+                <span>${total}</span>
               </div>
-            </div>
-          )}
+              <div className="flex justify-between mb-2">
+                <span>Shipping</span>
+                <span>Free</span>
+              </div>
+              <div className="flex justify-between font-bold text-lg">
+                <span>Total</span>
+                <span>${total}</span>
+              </div>
+              <Link href={"/checkout"}>
+                <Button className="w-full mt-4">Checkout</Button>
+              </Link>
+            </CardContent>
+          </Card>
         </div>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </Layout>
   );
 }

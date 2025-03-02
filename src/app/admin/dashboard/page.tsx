@@ -1,8 +1,7 @@
 "use client";
 
-import { Bell, ChevronDown, MoreHorizontal, Search } from "lucide-react";
+import { Bell, ChevronDown, Search } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -10,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
+  // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -23,32 +22,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useOrders } from "@/hooks/use-order";
-import { OrderStatus } from "@/types";
 import { useUsers } from "@/hooks/use-users";
 import { formatDate, formatPrice } from "@/lib/utils";
+import { getStatusBadge } from "@/app/components/status-badge";
 
 export default function Dashboard() {
   const { users, currentUser, setCurrentUser } = useUsers();
   const { orders, loading } = useOrders(currentUser?.userId);
-
-  const getStatusBadge = (status: string) => {
-    switch (status.toLowerCase() as OrderStatus) {
-      case "delivered":
-        return (
-          <Badge className="bg-green-500 hover:bg-green-600">• Delivered</Badge>
-        );
-      case "pending":
-        return (
-          <Badge className="bg-orange-500 hover:bg-orange-600">• Pending</Badge>
-        );
-      case "canceled":
-        return (
-          <Badge className="bg-red-500 hover:bg-red-600">• Canceled</Badge>
-        );
-      default:
-        return <Badge>{status}</Badge>;
-    }
-  };
 
   return (
     <div className="min-h-screen w-full">
@@ -88,10 +68,10 @@ export default function Dashboard() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  {/* <DropdownMenuSeparator /> */}
+                  {/* <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Settings</DropdownMenuItem> */}
+                  {/* <DropdownMenuSeparator /> */}
                   <DropdownMenuItem>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -140,7 +120,7 @@ export default function Dashboard() {
                     <TableHead>Customer name</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Amount</TableHead>
-                    <TableHead>Actions</TableHead>
+                    {/* <TableHead>Actions</TableHead> */}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -171,7 +151,7 @@ export default function Dashboard() {
                         </TableCell>
                         <TableCell>{getStatusBadge(order.status)}</TableCell>
                         <TableCell>{formatPrice(order.totalAmount)}</TableCell>
-                        <TableCell>
+                        {/* <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" size="icon">
@@ -188,7 +168,7 @@ export default function Dashboard() {
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
-                        </TableCell>
+                        </TableCell> */}
                       </TableRow>
                     ))
                   )}

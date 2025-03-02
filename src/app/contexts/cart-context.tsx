@@ -39,12 +39,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<number | null>(null);
   const { toast } = useToast();
 
-  // Check authentication status on mount
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsAuthenticated(true);
-      // Get user info to get userId
       fetch("http://localhost:5000/api/auth/userinfo", {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -59,7 +57,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           console.error("Error fetching user info:", error);
         });
     }
-  }, []);
+  }, [isAuthenticated]);
 
   // Fetch cart items when userId changes
   useEffect(() => {

@@ -18,7 +18,7 @@ const educationalResources = [
       "Access comprehensive guides and materials for better health management.",
     image:
       "https://guidewaycare.com/wp-content/themes/yootheme/cache/a0/the-importance-of-patient-engagement-and-education-a0f83947.jpeg",
-    date: "JUNE 9, 2019",
+    date: "MARCH 1, 2025",
     author: "ADMIN",
     comments: 3,
   },
@@ -28,7 +28,7 @@ const educationalResources = [
     description: "Professional development resources for healthcare providers.",
     image:
       "https://d2qr5s4kv79wo3.cloudfront.net/wp-content/uploads/2022/12/Importance-of-Medical-Training-Equipment-22-Dec.jpg",
-    date: "JUNE 9, 2019",
+    date: "MARCH 1, 2025",
     author: "ADMIN",
     comments: 3,
   },
@@ -38,7 +38,7 @@ const educationalResources = [
     description: "Latest medical research and clinical studies.",
     image:
       "https://www.gammacompliance.com/media/wysiwyg/Blog/GammaComplianceSolutions-109687-Training-Medical-Staff-Blogbanner1.jpg",
-    date: "JUNE 9, 2019",
+    date: "MARCH 1, 2025",
     author: "ADMIN",
     comments: 3,
   },

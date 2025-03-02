@@ -10,7 +10,7 @@ import { ShoppingCarts } from "./shopping-cart";
 import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, ListOrdered, ChevronRight } from "lucide-react";
 import { useCart } from "@/app/contexts/cart-context";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -80,7 +80,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <nav className="hidden md:flex space-x-8">
               {[
                 { href: "/educational", label: "Educational" },
-                { href: "/business", label: "Business" },
                 { href: "/products", label: "Products" },
                 { href: "/contact", label: "Contact" },
                 { href: "/about", label: "About Us" },
@@ -90,7 +89,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   className={`rounded-none border-b-2 border-transparent hover:border-gray-400 py-5 text-[#2a2b2a] font-semibold hover:text-[#2a2b2a] focus:outline-none ${
                     pathname === item.href
-                      ? "border-[#000000]"
+                      ? "border-[#2a2b2a]"
                       : "border-transparent"
                   }`}
                 >
@@ -118,13 +117,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         : "opacity-0 invisible scale-95"
                     } z-50 transform origin-top-right`}
                   >
-                    <div className="block px-6 py-3 text-gray-800 hover:bg-gray-50">
-                      <div className="font-medium text-lg">{user.username}</div>
+                    <div className="block px-6 py-3 text-gray-800  border-b border-gray-200">
+                      <div className="font-medium text-lg uppercase">
+                        {user.username}
+                      </div>
                       <div className="text-sm text-gray-500">{user.email}</div>
                     </div>
+                    <Link
+                      href="/orders"
+                      className="w-full text-left px-6 py-3 text-gray-800 hover:bg-gray-100 flex items-center gap-4"
+                    >
+                      <ListOrdered />
+                      My orders
+                      <ChevronRight className="w-4 h-4 ml-auto" />
+                    </Link>
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-6 py-3 text-gray-800 hover:bg-gray-100 flex items-center rounded-b-lg transition-colors"
+                      className="w-full text-left px-6 py-3 text-gray-800 hover:bg-gray-100 flex items-center rounded-b-lg"
                     >
                       <LogOut className="w-4 h-4 mr-2" />
                       Logout
@@ -174,13 +183,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link href="/educational">Educational</Link>
                 </li>
                 <li>
-                  <Link href="/business">Business</Link>
-                </li>
-                <li>
                   <Link href="/contact">Contact</Link>
                 </li>
                 <li>
                   <Link href="/about">About us</Link>
+                </li>
+                <li>
+                  <Link href="/orders">Orders</Link>
                 </li>
               </ul>
             </div>

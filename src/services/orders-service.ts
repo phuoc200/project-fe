@@ -19,7 +19,7 @@ export interface Order {
 export const ordersService = {
   // Get all orders for a user
   async getOrdersByUserId(userId: number): Promise<Order[]> {
-    return fetchClient(`/api/orders/${userId}`);
+    return fetchClient(`/order/${userId}`);
   },
 
   // Get a single order by ID

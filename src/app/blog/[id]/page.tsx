@@ -27,7 +27,7 @@ const blogs = [
     image:
       "https://guidewaycare.com/wp-content/themes/yootheme/cache/a0/the-importance-of-patient-engagement-and-education-a0f83947.jpeg",
     author: "ADMIN",
-    date: "JUNE 9, 2019",
+    date: "MARCH 1, 2025",
     category: "Health & Wellness",
     comments: [
       {
@@ -35,21 +35,21 @@ const blogs = [
         author: "Dr. Michael Smith",
         content:
           "This is a crucial topic that needs more attention. Sleep deprivation is becoming increasingly common in our modern society.",
-        date: "JUNE 9, 2019",
+        date: "MARCH 1, 2025",
       },
       {
         id: 2,
         author: "Sarah Johnson",
         content:
           "Great article! I've been working on improving my sleep habits and have noticed a significant difference in my daily performance.",
-        date: "JUNE 9, 2019",
+        date: "MARCH 1, 2025",
       },
       {
         id: 3,
         author: "James Wilson",
         content:
           "The research cited here is very enlightening. Would love to see more articles on this topic.",
-        date: "JUNE 9, 2019",
+        date: "MARCH 1, 2025",
       },
     ],
   },
@@ -61,7 +61,7 @@ const blogs = [
     image:
       "https://d2qr5s4kv79wo3.cloudfront.net/wp-content/uploads/2022/12/Importance-of-Medical-Training-Equipment-22-Dec.jpg",
     author: "ADMIN",
-    date: "JUNE 9, 2019",
+    date: "MARCH 1, 2025",
     category: "Health & Wellness",
     comments: [
       {
@@ -69,21 +69,21 @@ const blogs = [
         author: "Dr. Michael Smith",
         content:
           "This is a crucial topic that needs more attention. Sleep deprivation is becoming increasingly common in our modern society.",
-        date: "JUNE 9, 2019",
+        date: "MARCH 1, 2025",
       },
       {
         id: 2,
         author: "Sarah Johnson",
         content:
           "Great article! I've been working on improving my sleep habits and have noticed a significant difference in my daily performance.",
-        date: "JUNE 9, 2019",
+        date: "MARCH 1, 2025",
       },
       {
         id: 3,
         author: "James Wilson",
         content:
           "The research cited here is very enlightening. Would love to see more articles on this topic.",
-        date: "JUNE 9, 2019",
+        date: "MARCH 1, 2025",
       },
     ],
   },
@@ -95,7 +95,7 @@ const blogs = [
     image:
       "https://www.gammacompliance.com/media/wysiwyg/Blog/GammaComplianceSolutions-109687-Training-Medical-Staff-Blogbanner1.jpg",
     author: "ADMIN",
-    date: "JUNE 9, 2019",
+    date: "MARCH 1, 2025",
     category: "Health & Wellness",
     comments: [
       {
@@ -103,21 +103,21 @@ const blogs = [
         author: "Dr. Michael Smith",
         content:
           "This is a crucial topic that needs more attention. Sleep deprivation is becoming increasingly common in our modern society.",
-        date: "JUNE 9, 2019",
+        date: "MARCH 1, 2025",
       },
       {
         id: 2,
         author: "Sarah Johnson",
         content:
           "Great article! I've been working on improving my sleep habits and have noticed a significant difference in my daily performance.",
-        date: "JUNE 9, 2019",
+        date: "MARCH 1, 2025",
       },
       {
         id: 3,
         author: "James Wilson",
         content:
           "The research cited here is very enlightening. Would love to see more articles on this topic.",
-        date: "JUNE 9, 2019",
+        date: "MARCH 1, 2025",
       },
     ],
   },
@@ -127,7 +127,7 @@ const recentBlogs = [
   {
     id: 1,
     title: "Professional development resources for healthcare providers.",
-    date: "MAY 22, 2019",
+    date: "FEB 22, 2025",
     author: "ADMIN",
     comments: 19,
     image:
@@ -136,7 +136,7 @@ const recentBlogs = [
   {
     id: 2,
     title: "New Developments in Cardiac Surgery Techniques",
-    date: "MAY 21, 2019",
+    date: "FEB 21, 2025",
     author: "ADMIN",
     comments: 15,
     image:
@@ -145,7 +145,7 @@ const recentBlogs = [
   {
     id: 3,
     title: "New Developments in Cardiac Surgery Techniques",
-    date: "MAY 21, 2019",
+    date: "FEB 21, 2025",
     author: "ADMIN",
     comments: 15,
     image:

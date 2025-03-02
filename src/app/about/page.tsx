@@ -34,7 +34,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="flex justify-center">
             <Image
-              src="https://preview.colorlib.com/theme/docmed/img/about/2.png.webp"
+              src="https://providencemedicalgroupkc.com/wp-content/uploads/2022/04/visitr-809x675.png"
               alt="Providence Clinic Doctors"
               width={500}
               height={400}
