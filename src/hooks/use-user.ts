@@ -13,7 +13,6 @@ export const useUser = () => {
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [deleteUserId, setDeleteUserId] = useState<number | null>(null);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -46,26 +45,6 @@ export const useUser = () => {
     [editingUser, fetchUsers]
   );
 
-  const handleDeleteUser = useCallback(async () => {
-    if (!deleteUserId) {
-      toast.error("No user ID selected for deletion");
-      return;
-    }
-    if (
-      !confirm(`Are you sure you want to delete user with ID ${deleteUserId}?`)
-    )
-      return;
-
-    try {
-      await usersService.deleteUser(deleteUserId);
-      toast.success(`User with ID ${deleteUserId} deleted successfully`);
-      fetchUsers();
-      setDeleteUserId(null);
-    } catch (error) {
-      toast.error(`Failed to delete user with ID ${deleteUserId}`);
-    }
-  }, [deleteUserId, fetchUsers]);
-
   return {
     users,
     loading,
@@ -73,10 +52,7 @@ export const useUser = () => {
     setEditingUser,
     isDialogOpen,
     setIsDialogOpen,
-    deleteUserId,
-    setDeleteUserId,
     fetchUsers,
     handleUpdateUser,
-    handleDeleteUser,
   };
 };

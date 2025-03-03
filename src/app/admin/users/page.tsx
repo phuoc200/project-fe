@@ -30,11 +30,8 @@ export default function UsersPage() {
     setEditingUser,
     isDialogOpen,
     setIsDialogOpen,
-    deleteUserId,
-    setDeleteUserId,
     fetchUsers,
     handleUpdateUser,
-    handleDeleteUser,
   } = useUser();
 
   useEffect(() => {
@@ -80,22 +77,6 @@ export default function UsersPage() {
           ))}
         </TableBody>
       </Table>
-
-      <div className="mt-4 flex items-center space-x-2">
-        <Input
-          type="number"
-          placeholder="Enter User ID to delete"
-          value={deleteUserId || ""}
-          onChange={(e) => setDeleteUserId(Number(e.target.value))}
-        />
-        <Button
-          variant="destructive"
-          onClick={handleDeleteUser}
-          disabled={!deleteUserId}
-        >
-          Delete User
-        </Button>
-      </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
